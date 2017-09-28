@@ -1,11 +1,16 @@
 package controller;
 
+import entity.Category;
+import entity.Product;
 import java.io.IOException;
+import java.util.Collection;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import session.CategoryFacade;
 
 /**
  * Main servlet for the AffableBean Demo Application
@@ -15,6 +20,15 @@ import javax.servlet.http.HttpServletResponse;
             "/viewCart", "/checkout", "/chooseLanguage",
             "/updateCart", "/addToCart", "/purchase"})
 public class ControllerServlet extends HttpServlet {
+
+    @EJB
+    private CategoryFacade categoryFacade;
+
+    @Override
+    public void init() throws ServletException {
+        // store category list in servlet context
+        getServletContext().setAttribute("categories", categoryFacade.findAll());
+    }
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -32,8 +46,15 @@ public class ControllerServlet extends HttpServlet {
 
         // if category page is requested
         if (userPath.equals("/category")) {
-            // TODO: Implement category request
+            // get categoryId from request
+            String categoryId = request.getQueryString();
 
+            if (categoryId != null) {
+                Category selectedCategory = categoryFacade.find(Short.parseShort(categoryId));
+                request.setAttribute("selectedCategory", selectedCategory);
+                Collection<Product> categoryProducts = selectedCategory.getProductCollection();
+                request.setAttribute("categoryProducts", categoryProducts);
+            }
             // if cart page is requested
         } else if (userPath.equals("/viewCart")) {
             // TODO: Implement cart page request

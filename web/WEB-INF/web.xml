@@ -24,6 +24,12 @@
             <include-coda>/WEB-INF/jspf/footer.jspf</include-coda>
         </jsp-property-group>
     </jsp-config>
+    
+    
+    <!-- Directly register the jdbc/affablebean datasource 
+    to enable access via sql tags in the JSP Pages -->
+    <!-- Commented out: We rather rely on JPA to access the database -->
+    <!--
     <resource-ref>
         <description>Connects to database for AffableBean application</description>
         <res-ref-name>jdbc/affablebean</res-ref-name>
@@ -31,4 +37,5 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
+    -->
 </web-app>
