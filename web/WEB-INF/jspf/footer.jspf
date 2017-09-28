@@ -1,7 +1,13 @@
-      <div id="footer">
-                <hr>
-                <p id="footerText">[ footer text ]</p>
-            </div>
-        </div>
-    </body>
+<div id="footer">
+    <br>
+    <hr id="footerDivider">
+    <p id="footerText" class="reallySmallText">
+        <a href="#">Privacy Policy</a>
+        &nbsp;&nbsp;::&nbsp;&nbsp;
+        <a href="#">Contact</a>
+        &nbsp;&nbsp;&copy;&nbsp;&nbsp;
+        2010 the affable bean</p>
+</div>        
+</div>
+</body>
 </html>
