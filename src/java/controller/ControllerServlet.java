@@ -5,6 +5,7 @@ import entity.Category;
 import entity.Product;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
@@ -61,18 +62,16 @@ public class ControllerServlet extends HttpServlet {
         String userPath = request.getServletPath();
         HttpSession session = request.getSession();
 
-        // if category page is requested
         if (userPath.equals("/category")) {
             // get categoryId from request
             String categoryId = request.getQueryString();
-
             if (categoryId != null) {
                 Category selectedCategory = categoryFacade.find(Short.parseShort(categoryId));
                 session.setAttribute("selectedCategory", selectedCategory);
                 Collection<Product> categoryProducts = selectedCategory.getProductCollection();
                 session.setAttribute("categoryProducts", categoryProducts);
             }
-            // if cart page is requested
+
         } else if (userPath.equals("/viewCart")) {
             String clear = request.getParameter("clear");
             if ((clear != null) && clear.equals("true")) {
@@ -80,21 +79,18 @@ public class ControllerServlet extends HttpServlet {
                 cart.clear();
             }
             userPath = "/cart";
-            // if checkout page is requested
+
         } else if (userPath.equals("/checkout")) {
             ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-
             // calculate total
             cart.calculateTotal(surcharge);
-
             // forward to checkout page and switch to a secure channel
-            // if user switches language
+
         } else if (userPath.equals("/chooseLanguage")) {
             // get language choice
             String language = request.getParameter("language");
             // place in request scope
             request.setAttribute("language", language);
-
             String userView = (String) session.getAttribute("view");
             if ((userView != null)
                     && (!userView.equals("/index"))) {     // index.jsp exists outside 'view' folder
@@ -180,10 +176,18 @@ public class ControllerServlet extends HttpServlet {
                 } else {
                     int orderId = orderManager.placeOrder(name, email, phone, address, cityRegion, ccNumber, cart);
                     if (orderId != 0) {
+
+                        // in case language was set using toggle, get language choice before destroying session
+                        Locale locale = (Locale) session.getAttribute("javax.servlet.jsp.jstl.fmt.locale.session");
+                        String language = (locale != null)?(String) locale.getLanguage():"";
+                        
                         // dissociate shopping cart from session
                         cart = null;
                         // end session
                         session.invalidate();
+                        if (!language.isEmpty())                        
+                            request.setAttribute("language", language);  
+
                         // get order details
                         Map orderMap = orderManager.getOrderDetails(orderId);
                         // place order details in request scope
