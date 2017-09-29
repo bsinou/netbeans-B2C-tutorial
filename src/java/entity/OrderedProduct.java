@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "ordered_product")
@@ -24,13 +23,15 @@ public class OrderedProduct implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected OrderedProductPK orderedProductPK;
+
     @Basic(optional = false)
-    @NotNull
     @Column(name = "quantity")
     private short quantity;
+
     @JoinColumn(name = "customer_order_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private CustomerOrder customerOrder;
+
     @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Product product;
@@ -107,5 +108,5 @@ public class OrderedProduct implements Serializable {
     public String toString() {
         return "entity.OrderedProduct[ orderedProductPK=" + orderedProductPK + " ]";
     }
-    
+
 }

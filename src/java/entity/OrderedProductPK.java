@@ -13,6 +13,7 @@ public class OrderedProductPK implements Serializable {
     @NotNull
     @Column(name = "customer_order_id")
     private int customerOrderId;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "product_id")

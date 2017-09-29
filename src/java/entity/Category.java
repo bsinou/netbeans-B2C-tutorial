@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -21,10 +16,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- *
- * @author bsinou
- */
 @Entity
 @Table(name = "category")
 @NamedQueries({
@@ -39,11 +30,13 @@ public class Category implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Short id;
+   
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")
     private Collection<Product> productCollection;
 
