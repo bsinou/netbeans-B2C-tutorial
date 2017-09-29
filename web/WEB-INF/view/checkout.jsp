@@ -1,3 +1,5 @@
+<c:set var='view' value='/checkout' scope='session' />
+
 <script src="js/jquery.validate.js" type="text/javascript"></script>
 
 <script type="text/javascript">

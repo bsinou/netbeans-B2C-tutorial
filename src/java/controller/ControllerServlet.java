@@ -90,10 +90,26 @@ public class ControllerServlet extends HttpServlet {
             // forward to checkout page and switch to a secure channel
             // if user switches language
         } else if (userPath.equals("/chooseLanguage")) {
-            // TODO: Implement language request
+            // get language choice
+            String language = request.getParameter("language");
+            // place in request scope
+            request.setAttribute("language", language);
 
+            String userView = (String) session.getAttribute("view");
+            if ((userView != null)
+                    && (!userView.equals("/index"))) {     // index.jsp exists outside 'view' folder
+                // so must be forwarded separately
+                userPath = userView;
+            } else {
+                // if previous view is index or cannot be determined, send user to welcome page
+                try {
+                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return;
+            }
         }
-
         doForward(request, response, userPath);
     }
 

@@ -1,4 +1,5 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var='view' value='/category' scope='session' />
+
 <div id="categoryLeftColumn">
     <c:forEach var="category" items="${categories}">
         <c:choose>

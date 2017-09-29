@@ -1,3 +1,5 @@
+<c:set var='view' value='/cart' scope='session' />
+
 <div id="singleColumn">
 
     <c:choose>
